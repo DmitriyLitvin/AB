@@ -58,8 +58,7 @@ public class TablePage {
 
             List<WebElement> rows = table.findElements(By.tagName("tr"));
 
-            List<List<String>> computerTable =
-                    new ArrayList<>();
+            List<List<String>> computerTable = new ArrayList<>();
             for (int i = 0; i < rows.size(); i++) {
                 List<WebElement> columns =
                         rows.get(i).findElements(By.tagName("td"));
@@ -75,16 +74,12 @@ public class TablePage {
                 break;
             }
 
-            WebElement next =
-                    webDriver.findElement(By.xpath(nextA));
+            WebElement next = webDriver.findElement(By.xpath(nextA));
             next.click();
 
-            pagination =
-                    webDriver.findElement(By.xpath(paginationDiv));
-            paginationArray =
-                    pagination.getText().split("to|of");
-            currentPaginationQty =
-                    Integer.valueOf(paginationArray[1].trim());
+            pagination = webDriver.findElement(By.xpath(paginationDiv));
+            paginationArray = pagination.getText().split("to|of");
+            currentPaginationQty = Integer.valueOf(paginationArray[1].trim());
 
             for (int i = 0; i < computerTable.size(); i++) {
                 if (computerTable.get(i).get(0).equals(name)) {
