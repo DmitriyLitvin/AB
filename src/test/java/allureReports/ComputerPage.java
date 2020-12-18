@@ -47,7 +47,7 @@ public class ComputerPage {
 
         String discountedDate = null;
 
-        if (introducedDate != "") {
+        if (introducedDate != "-") {
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
