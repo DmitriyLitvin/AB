@@ -1,4 +1,4 @@
-# AB_Software
+# AB_Soft
 ## Launch of the project
 1. Fork github repository 
 2. Clone github repository git clone <ссылка на репозиторий>
