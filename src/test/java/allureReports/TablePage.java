@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -27,7 +28,8 @@ public class TablePage {
         basicAction = new BasicAction(webDriver, action);
     }
 
-    public void ifComputerExist(String name) throws InterruptedException, TimeoutException {
+    public void ifComputerExist(String name, String firm, String introducedDate, String discountedDate) throws InterruptedException, TimeoutException {
+        List<String> addedComputer = Arrays.asList(name, introducedDate, discountedDate, firm);
         WebElement addNewComputerButton = webDriver.findElement(By.xpath(addComputerButton));
 
         basicAction.isElementVisible(addNewComputerButton);
@@ -80,7 +82,7 @@ public class TablePage {
             currentPaginationQty = Integer.valueOf(paginationArray[1].trim());
 
             for (int i = 0; i < computerTable.size(); i++) {
-                if (computerTable.get(i).get(0).equals(name)) {
+                if (computerTable.get(i).equals(addedComputer)) {
                     isExist = true;
                 }
             }

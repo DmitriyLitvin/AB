@@ -8,7 +8,9 @@ import org.openqa.selenium.interactions.Actions;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
@@ -32,7 +34,7 @@ public class ComputerPage {
         basicAction = new BasicAction(webDriver, action);
     }
 
-    public void createComputer(String name, String firm) throws TimeoutException, InterruptedException {
+    public String createComputer(String name, String firm, String introducedDate) throws TimeoutException, InterruptedException {
         webDriver.get(baseURL);
 
         WebElement addNewComputerButton = webDriver.findElement(By.xpath(addNewComputerA));
@@ -41,29 +43,21 @@ public class ComputerPage {
         WebElement computerHeader = webDriver.findElement(By.xpath(computerDatabaseA));
 
         basicAction.isElementVisible(computerHeader);
-
         basicAction.sendTextWithAction(name, nameInput);
 
-        String oldIntroducedDate = "2020-12-16";
+        String discountedDate = null;
 
-        Date discountedDate;
+        if (introducedDate != "") {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-        try {
-            SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
-            Date date = oldDateFormat.parse(oldIntroducedDate);
-            String newDate = newDateFormat.format(date);
-            basicAction.sendTextWithAction(newDate, discontinuedInput);
-
-            LocalDateTime discountedLocalDate = LocalDateTime.ofInstant(date.toInstant(),
-                    ZoneId.systemDefault()).minusYears(10);
-
-            discountedDate = Date.from(discountedLocalDate.atZone(ZoneId.systemDefault()).toInstant());
-            newDate = newDateFormat.format(discountedDate);
-            basicAction.sendTextWithAction(newDate, introducedInput);
-        } catch (Exception e) {
-            e.printStackTrace();
+                Date date = dateFormat.parse(introducedDate);
+                basicAction.sendTextWithAction(introducedDate, discontinuedInput);
+                discountedDate = basicAction.minusYear(date, 10);
+                basicAction.sendTextWithAction(discountedDate, introducedInput);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         WebElement companyDropDown = webDriver.findElement(By.xpath(selectCompanyDropdown));
@@ -76,5 +70,11 @@ public class ComputerPage {
 
         WebElement inputButton = webDriver.findElement(By.xpath(createComputerInput));
         inputButton.click();
+
+        if(introducedDate == "-") {
+            return "-";
+        } else {
+            return discountedDate;
+        }
     }
 }

@@ -19,12 +19,20 @@ public class DatabaseTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testComputerExist() throws Exception {
         ComputerPage computerPage = new ComputerPage(webDriver,action);
-        computerPage.createComputer("A", "IBM");
+        String discountedDate = computerPage.createComputer("Acorn Archimedes", "Acorn computer", "-");
 
         TablePage tablePage = new TablePage(webDriver,action);
-        tablePage.ifComputerExist("A");
+        tablePage.ifComputerExist("Acorn Archimedes", "Acorn computer", "-", discountedDate);
     }
 
+    @Test
+    public void testComputerNotExist() throws Exception {
+        ComputerPage computerPage = new ComputerPage(webDriver,action);
+        String discountedDate = computerPage.createComputer("Amiga", "Amstrad", "2020-12-16");
+
+        TablePage tablePage = new TablePage(webDriver,action);
+        tablePage.ifComputerExist("Amiga", "Amstrad", "2020-12-16", discountedDate);
+    }
 }

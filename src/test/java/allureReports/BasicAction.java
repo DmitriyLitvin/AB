@@ -3,6 +3,11 @@ package allureReports;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 public class BasicAction {
@@ -77,5 +82,16 @@ public class BasicAction {
         }
 
         return true;
+    }
+
+    public String minusYear(Date date, int years) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(),
+                ZoneId.systemDefault()).minusYears(years);
+
+        Date newDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+        return dateFormat.format(newDate);
     }
 }
