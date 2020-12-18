@@ -49,11 +49,9 @@ public class TablePage {
 
         do {
             try {
-                table =
-                        webDriver.findElement(By.xpath(computerTable));
+                table = webDriver.findElement(By.xpath(computerTable));
             } catch (Exception e) {
-                table =
-                        webDriver.findElement(By.xpath(computerTable));
+                table = webDriver.findElement(By.xpath(computerTable));
             }
 
             List<WebElement> rows = table.findElements(By.tagName("tr"));
