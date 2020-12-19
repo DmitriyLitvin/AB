@@ -32,8 +32,8 @@ public class TablePage {
         List<String> addedComputer = Arrays.asList(name, introducedDate, discountedDate, firm);
         WebElement addNewComputerButton = webDriver.findElement(By.xpath(addComputerButton));
 
-        basicAction.isElementVisible(addNewComputerButton);
-        basicAction.sendTextWithActionAndEnter(name, searchBoxInput);
+        basicAction.isElementVisible(addNewComputerButton, 5);
+        basicAction.sendTextWithActionAndEnter(name, searchBoxInput, 5);
 
         WebElement pagination;
         try {

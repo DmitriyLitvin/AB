@@ -20,12 +20,12 @@ public class BasicAction {
     }
 
 
-    public boolean sendTextWithAction(String text, String xpath) throws InterruptedException, TimeoutException {
+    public boolean sendTextWithAction(String text, String xpath, int timeout) throws InterruptedException, TimeoutException {
         int retry = 0;
         WebElement nameInput;
 
         boolean isEmpty = true;
-        while (isEmpty && retry < 5) {
+        while (retry < timeout) {
             try {
                 nameInput = webDriver.findElement(By.xpath(xpath));
                 isEmpty = nameInput.getAttribute("value").isEmpty();
@@ -41,6 +41,9 @@ public class BasicAction {
                 }
 
             }
+            if (!isEmpty) {
+                break;
+            }
 
             retry++;
             Thread.sleep(1000);
@@ -49,19 +52,19 @@ public class BasicAction {
         return isEmpty;
     }
 
-    public void sendTextWithActionAndEnter(String text, String xpath) throws TimeoutException, InterruptedException {
-        this.sendTextWithAction(text, xpath);
+    public void sendTextWithActionAndEnter(String text, String xpath, int timeout) throws TimeoutException, InterruptedException {
+        this.sendTextWithAction(text, xpath, timeout);
         action.moveToElement(webDriver.findElement(By.xpath(xpath)))
                 .sendKeys(Keys.ENTER)
                 .perform();
     }
 
-    public boolean isElementVisible(WebElement webElement) throws TimeoutException, InterruptedException {
+    public boolean isElementVisible(WebElement webElement, int timeout) throws TimeoutException, InterruptedException {
         int retry = 0;
 
         while(!webElement.isEnabled()){
             retry++;
-            if (retry > 5) {
+            if (retry > timeout) {
                 return false;
             }
             Thread.sleep(1000);
@@ -70,12 +73,12 @@ public class BasicAction {
         return true;
     }
 
-    public boolean clickWithAction(WebElement webElement) throws InterruptedException {
+    public boolean clickWithAction(WebElement webElement, int timeout) throws InterruptedException {
         int retry = 0;
         while(!webElement.isDisplayed()) {
             webElement.click();
             retry++;
-            if (retry > 5) {
+            if (retry > timeout) {
                 return false;
             }
             Thread.sleep(1000);

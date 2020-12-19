@@ -42,8 +42,8 @@ public class ComputerPage {
 
         WebElement computerHeader = webDriver.findElement(By.xpath(computerDatabaseA));
 
-        basicAction.isElementVisible(computerHeader);
-        basicAction.sendTextWithAction(name, nameInput);
+        basicAction.isElementVisible(computerHeader, 5);
+        basicAction.sendTextWithAction(name, nameInput, 5);
 
         String discountedDate = null;
 
@@ -52,9 +52,9 @@ public class ComputerPage {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
                 Date date = dateFormat.parse(introducedDate);
-                basicAction.sendTextWithAction(introducedDate, discontinuedInput);
+                basicAction.sendTextWithAction(introducedDate, discontinuedInput, 5);
                 discountedDate = basicAction.minusYear(date, 10);
-                basicAction.sendTextWithAction(discountedDate, introducedInput);
+                basicAction.sendTextWithAction(discountedDate, introducedInput, 5);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,12 +66,12 @@ public class ComputerPage {
         WebElement optionDropDown = webDriver.findElement(By.xpath("//option[text()=\'" + firm + "\']"));
         optionDropDown.click();
 
-        basicAction.clickWithAction(companyDropDown);
+        basicAction.clickWithAction(companyDropDown, 5);
 
         WebElement inputButton = webDriver.findElement(By.xpath(createComputerInput));
         inputButton.click();
 
-        if(introducedDate == "-") {
+        if (introducedDate == "-") {
             return "-";
         } else {
             return discountedDate;
