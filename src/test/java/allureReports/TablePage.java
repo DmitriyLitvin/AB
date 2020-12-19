@@ -57,11 +57,9 @@ public class TablePage {
             }
 
             List<WebElement> rows = table.findElements(By.tagName("tr"));
-
             List<List<String>> computerTable = new ArrayList<>();
             for (int i = 0; i < rows.size(); i++) {
-                List<WebElement> columns =
-                        rows.get(i).findElements(By.tagName("td"));
+                List<WebElement> columns = rows.get(i).findElements(By.tagName("td"));
                 List<String> rowList = new ArrayList<>();
 
                 for (int j = 0; j < columns.size(); j++) {
