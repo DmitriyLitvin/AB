@@ -1,6 +1,6 @@
 # AB_Soft
 ## Prerequisites
-You should download and install allure, maven, java
+You should download and install allure, maven, java, and add H2_HOME, JAVA_HOME system variables
 
 ## Launch of the project
 1. Fork github repository 
