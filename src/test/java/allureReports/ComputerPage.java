@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -38,15 +40,11 @@ public class ComputerPage {
         webDriver.get(baseURL);
 
         WebElement addNewComputerButton = webDriver.findElement(By.xpath(addNewComputerA));
-        addNewComputerButton.click();
+        basicAction.clickWithAction(addNewComputerButton, 5);
 
-        WebElement computerHeader = webDriver.findElement(By.xpath(computerDatabaseA));
-
-        basicAction.isElementVisible(computerHeader, 5);
         basicAction.sendTextWithAction(name, nameInput, 5);
 
         String discountedDate = null;
-
         if (introducedDate != "-") {
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -61,15 +59,13 @@ public class ComputerPage {
         }
 
         WebElement companyDropDown = webDriver.findElement(By.xpath(selectCompanyDropdown));
-        action.moveToElement(companyDropDown).click().perform();
-
-        WebElement optionDropDown = webDriver.findElement(By.xpath("//option[text()=\'" + firm + "\']"));
-        optionDropDown.click();
-
         basicAction.clickWithAction(companyDropDown, 5);
 
+        WebElement optionDropDown = webDriver.findElement(By.xpath("//option[text()=\'" + firm + "\']"));
+        basicAction.clickWithAction(optionDropDown, 5);
+
         WebElement inputButton = webDriver.findElement(By.xpath(createComputerInput));
-        inputButton.click();
+        basicAction.clickWithAction(inputButton, 5);
 
         if (introducedDate == "-") {
             return "-";

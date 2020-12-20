@@ -2,13 +2,15 @@ package allureReports;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeoutException;
 
 public class BasicAction {
     private WebDriver webDriver;
@@ -19,37 +21,22 @@ public class BasicAction {
         this.action = action;
     }
 
-
-    public boolean sendTextWithAction(String text, String xpath, int timeout) throws InterruptedException, TimeoutException {
+    public void sendTextWithAction(String text, String xpath, int timeout) throws InterruptedException, TimeoutException {
+        WebDriverWait wait = new WebDriverWait(webDriver, timeout);
         int retry = 0;
-        WebElement nameInput;
-
-        boolean isEmpty = true;
-        while (retry < timeout) {
+        do {
+            WebElement webElement = webDriver.findElement(By.xpath(xpath));
+            webElement.sendKeys(text);
             try {
-                nameInput = webDriver.findElement(By.xpath(xpath));
-                isEmpty = nameInput.getAttribute("value").isEmpty();
-                if (isEmpty) {
-                    action.moveToElement(nameInput).sendKeys(nameInput, text).perform();
+                if(wait.until((ExpectedCondition<Boolean>) driver -> driver.findElement(By.xpath(xpath)).getAttribute("value").length() != 0)) {
+                    break;
                 }
-
             } catch (Exception e) {
-                nameInput = webDriver.findElement(By.xpath(xpath));
-                isEmpty = nameInput.getAttribute("value").isEmpty();
-                if (isEmpty) {
-                    action.moveToElement(nameInput).sendKeys(nameInput, text).perform();
-                }
 
             }
-            if (!isEmpty) {
-                break;
-            }
-
             retry++;
             Thread.sleep(1000);
-        }
-
-        return isEmpty;
+        }while (retry < 5);
     }
 
     public void sendTextWithActionAndEnter(String text, String xpath, int timeout) throws TimeoutException, InterruptedException {
@@ -59,29 +46,20 @@ public class BasicAction {
                 .perform();
     }
 
-    public boolean isElementVisible(WebElement webElement, int timeout) throws TimeoutException, InterruptedException {
-        int retry = 0;
-
-        while(!webElement.isEnabled()){
-            retry++;
-            if (retry > timeout) {
-                return false;
-            }
-            Thread.sleep(1000);
-        }
-
-        return true;
-    }
-
     public boolean clickWithAction(WebElement webElement, int timeout) throws InterruptedException {
         int retry = 0;
-        while(!webElement.isDisplayed()) {
-            webElement.click();
-            retry++;
-            if (retry > timeout) {
-                return false;
+        WebDriverWait wait = new WebDriverWait(webDriver, timeout);
+        while (retry < 5) {
+            try {
+                if(wait.until(ExpectedConditions.elementToBeClickable(webElement)).isEnabled()) {
+                    webElement.click();
+                    break;
+                }
+            } catch (Exception e) {
+
             }
             Thread.sleep(1000);
+            retry++;
         }
 
         return true;
@@ -92,7 +70,6 @@ public class BasicAction {
 
         LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(),
                 ZoneId.systemDefault()).minusYears(years);
-
         Date newDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
         return dateFormat.format(newDate);

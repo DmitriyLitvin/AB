@@ -1,9 +1,13 @@
 package allureReports;
 
+import com.google.common.base.Predicate;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,29 +36,23 @@ public class TablePage {
         List<String> addedComputer = Arrays.asList(name, introducedDate, discountedDate, firm);
         WebElement addNewComputerButton = webDriver.findElement(By.xpath(addComputerButton));
 
-        basicAction.isElementVisible(addNewComputerButton, 5);
         basicAction.sendTextWithActionAndEnter(name, searchBoxInput, 5);
 
-        WebElement pagination;
-        try {
-            pagination = webDriver.findElement(By.xpath(paginationDiv));
-        } catch (Exception e) {
-            pagination = webDriver.findElement(By.xpath(paginationDiv));
-        }
+        new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
+                .until(ExpectedConditions.elementToBeClickable(By.xpath(paginationDiv)));
+        WebElement pagination = webDriver.findElement(By.xpath(paginationDiv));
 
         String[] paginationArray = pagination.getText().split("to|of");
         int maxPaginationQty = Integer.valueOf(paginationArray[2].trim());
-        int currentPaginationQty = Integer.valueOf(paginationArray[1].trim());
+        int currentPaginationQty;
 
         WebElement table;
         boolean isExist = false;
 
         do {
-            try {
-                table = webDriver.findElement(By.xpath(computerTable));
-            } catch (Exception e) {
-                table = webDriver.findElement(By.xpath(computerTable));
-            }
+            new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath(computerTable)));
+            table = webDriver.findElement(By.xpath(computerTable));
 
             List<WebElement> rows = table.findElements(By.tagName("tr"));
             List<List<String>> computerTable = new ArrayList<>();
