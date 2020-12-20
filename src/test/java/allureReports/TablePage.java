@@ -34,7 +34,8 @@ public class TablePage {
 
     public void ifComputerExist(String name, String firm, String introducedDate, String discountedDate) throws InterruptedException, TimeoutException {
         List<String> addedComputer = Arrays.asList(name, introducedDate, discountedDate, firm);
-        WebElement addNewComputerButton = webDriver.findElement(By.xpath(addComputerButton));
+        new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(addComputerButton)));
 
         basicAction.sendTextWithActionAndEnter(name, searchBoxInput, 5);
 
