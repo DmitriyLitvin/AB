@@ -37,9 +37,9 @@ public class DatabaseTest {
     @Test
     public void testComputerNotExist() throws Exception {
         ComputerPage computerPage = new ComputerPage(webDriver,action);
-        String discountedDate = computerPage.createComputer("Amiga", "Amstrad", "2020-12-16");
+        String discountedDate = computerPage.createComputer("Everest Home", "Amstrad", "2020-12-16");
 
         TablePage tablePage = new TablePage(webDriver,action);
-        tablePage.ifComputerExist("Amiga", "Amstrad", "2020-12-16", discountedDate);
+        tablePage.ifComputerExist("Everest Home", "Amstrad", "2020-12-16", discountedDate);
     }
 }
