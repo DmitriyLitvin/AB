@@ -48,14 +48,19 @@ public class TablePage {
         int currentPaginationQty;
 
         WebElement table;
+        List<WebElement> rows = new ArrayList<>();
         boolean isExist = false;
 
         do {
-            new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath(computerTable)));
-            table = webDriver.findElement(By.xpath(computerTable));
+            try {
+                new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
+                        .until(ExpectedConditions.elementToBeClickable(By.xpath(computerTable)));
+                table = webDriver.findElement(By.xpath(computerTable));
+                rows = table.findElements(By.tagName("tr"));
+            } catch (Exception e) {
 
-            List<WebElement> rows = table.findElements(By.tagName("tr"));
+            }
+
             List<List<String>> computerTable = new ArrayList<>();
             for (int i = 0; i < rows.size(); i++) {
                 List<WebElement> columns = rows.get(i).findElements(By.tagName("td"));
