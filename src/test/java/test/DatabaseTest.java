@@ -13,15 +13,20 @@ public class DatabaseTest extends BaseTest {
         String discountedDate = computerPage.createComputer("Acorn Archimedes", "Acorn computer", "-");
 
         TablePage tablePage = new TablePage(webDriver);
-        Assert.assertEquals( tablePage.ifComputerExist("Acorn Archimedes", "Acorn computer", "-", discountedDate), true);
+        Assert.assertTrue(tablePage.ifComputerExist("Acorn Archimedes", "Acorn computer", "-", discountedDate));
     }
 
     @Test
     public void testComputerNotExist() throws Exception {
+        String computerName = "Everest Home";
+        String computerFirm = "Amstrad";
+        String introducedDate = "2020-12-16";
+
         ComputerPage computerPage = new ComputerPage(webDriver);
-        String discountedDate = computerPage.createComputer("Everest Home", "Amstrad", "2020-12-16");
+        String discountedDate = computerPage.createComputer(computerName, computerFirm, introducedDate);
 
         TablePage tablePage = new TablePage(webDriver);
-        Assert.assertEquals(tablePage.ifComputerExist("Everest Home", "Amstrad", "2020-12-16", discountedDate), false);
+        Assert.assertFalse(tablePage.ifComputerExist(computerName, computerFirm, introducedDate, discountedDate),
+                String.format("computer with name %s and firm %s and introduce date %s", computerName, computerFirm, introducedDate));
     }
 }
