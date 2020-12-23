@@ -1,9 +1,7 @@
-package allureReports;
+package page;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.SimpleDateFormat;
@@ -12,31 +10,27 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 
-public class BasicAction {
-    private WebDriver webDriver;
-    private Actions action;
+public class BasePage {
+    WebDriver webDriver;
+    Actions action;
 
-    public BasicAction(WebDriver webDriver, Actions action) {
+    public BasePage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.action = action;
+        this.action = new Actions(webDriver);
     }
 
     public void sendTextWithAction(String text, String xpath, int timeout) throws InterruptedException, TimeoutException {
         WebDriverWait wait = new WebDriverWait(webDriver, timeout);
-        int retry = 0;
-        do {
-            WebElement webElement = webDriver.findElement(By.xpath(xpath));
-            webElement.sendKeys(text);
-            try {
-                if(wait.until((ExpectedCondition<Boolean>) driver -> driver.findElement(By.xpath(xpath)).getAttribute("value").length() != 0)) {
-                    break;
-                }
-            } catch (Exception e) {
 
+        wait.until((WebDriver dr) -> {
+            try {
+                WebElement webElement = dr.findElement(By.xpath(xpath));
+                webElement.sendKeys(text);
+                return  dr.findElement(By.xpath(xpath)).getAttribute("value").length() != 0;
+            } catch (Exception e) {
+                return false;
             }
-            retry++;
-            Thread.sleep(1000);
-        }while (retry < 5);
+        });
     }
 
     public void sendTextWithActionAndEnter(String text, String xpath, int timeout) throws TimeoutException, InterruptedException {
@@ -46,23 +40,17 @@ public class BasicAction {
                 .perform();
     }
 
-    public boolean clickWithAction(WebElement webElement, int timeout) throws InterruptedException {
-        int retry = 0;
+    public boolean clickWithAction(String xpath, int timeout) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(webDriver, timeout);
-        while (retry < 5) {
+
+        return wait.until((WebDriver dr) -> {
             try {
-                if(wait.until(ExpectedConditions.elementToBeClickable(webElement)).isEnabled()) {
-                    webElement.click();
-                    break;
-                }
+                dr.findElement(By.xpath(xpath)).click();
+                return true;
             } catch (Exception e) {
-
+                return false;
             }
-            Thread.sleep(1000);
-            retry++;
-        }
-
-        return true;
+        });
     }
 
     public String minusYear(Date date, int years) {
