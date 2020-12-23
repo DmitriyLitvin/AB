@@ -1,6 +1,5 @@
-package allureReports;
+package page;
 
-import com.google.common.base.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -14,30 +13,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-public class TablePage {
+public class TablePage extends BasePage {
     private String addComputerButton = "//a[text()='Add a new computer']";
     private String searchBoxInput = "//input[@id='searchbox']";
     private String paginationDiv = "//div[@id='pagination']/ul/li[2]/a";
     private String computerTable = "//table[contains(@class, 'computers')]/tbody";
     private String nextA = "//a[contains(text(), 'Next')]";
 
-    private WebDriver webDriver;
-    private BasicAction basicAction;
-    private Actions action;
-
-
-    public TablePage(WebDriver webDriver, Actions action) {
-        this.webDriver = webDriver;
-        this.action = action;
-        basicAction = new BasicAction(webDriver, action);
+    public TablePage(WebDriver webDriver) {
+        super(webDriver);
     }
 
-    public void ifComputerExist(String name, String firm, String introducedDate, String discountedDate) throws InterruptedException, TimeoutException {
+    public boolean ifComputerExist(String name, String firm, String introducedDate, String discountedDate) throws InterruptedException, TimeoutException {
         List<String> addedComputer = Arrays.asList(name, introducedDate, discountedDate, firm);
         new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(addComputerButton)));
 
-        basicAction.sendTextWithActionAndEnter(name, searchBoxInput, 5);
+        sendTextWithActionAndEnter(name, searchBoxInput, 5);
 
         new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
                 .until(ExpectedConditions.elementToBeClickable(By.xpath(paginationDiv)));
@@ -90,6 +82,6 @@ public class TablePage {
             }
         } while (currentPaginationQty < maxPaginationQty && !isExist);
 
-        assert isExist;
+        return isExist;
     }
 }
