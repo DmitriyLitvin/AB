@@ -38,13 +38,15 @@ public class TablePage extends BasePage {
 
         String[] paginationArray = pagination.getText().split("to|of");
         int maxPaginationQty = Integer.valueOf(paginationArray[2].trim());
-        int currentPaginationQty;
+        int currentPaginationQty  = 0;
+        int nextPaginationQty;
 
         WebElement table;
         List<WebElement> rows = new ArrayList<>();
         boolean isExist = false;
+        int k = 1;
 
-        do {
+        while (currentPaginationQty < maxPaginationQty){
             try {
                 new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
                         .until(ExpectedConditions.elementToBeClickable(By.xpath(computerTable)));
@@ -72,17 +74,17 @@ public class TablePage extends BasePage {
             WebElement next = webDriver.findElement(By.xpath(nextA));
             next.click();
 
-            pagination = webDriver.findElement(By.xpath(paginationDiv));
-            paginationArray = pagination.getText().split("to|of");
-            currentPaginationQty = Integer.valueOf(paginationArray[1].trim());
+            currentPaginationQty += computerTable.size();
+
 
             for (int i = 0; i < computerTable.size(); i++) {
                 if (computerTable.get(i).equals(addedComputer)) {
                     isExist = true;
                 }
             }
-        } while (currentPaginationQty < maxPaginationQty && !isExist);
+        };
 
         return isExist;
     }
 }
+
