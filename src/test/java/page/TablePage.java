@@ -39,12 +39,10 @@ public class TablePage extends BasePage {
         String[] paginationArray = pagination.getText().split("to|of");
         int maxPaginationQty = Integer.valueOf(paginationArray[2].trim());
         int currentPaginationQty  = 0;
-        int nextPaginationQty;
 
         WebElement table;
         List<WebElement> rows = new ArrayList<>();
         boolean isExist = false;
-        int k = 1;
 
         while (currentPaginationQty < maxPaginationQty){
             try {
