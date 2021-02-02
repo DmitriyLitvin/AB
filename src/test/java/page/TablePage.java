@@ -24,7 +24,8 @@ public class TablePage extends BasePage {
         super(webDriver);
     }
 
-    public boolean ifComputerExist(String name, String firm, String introducedDate, String discountedDate) throws InterruptedException, TimeoutException {
+    public boolean ifComputerExist(String name, String firm, String introducedDate, String discountedDate)
+            throws InterruptedException, TimeoutException {
         List<String> addedComputer = Arrays.asList(name, introducedDate, discountedDate, firm);
         new WebDriverWait(webDriver, 5).ignoring(StaleElementReferenceException.class)
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(addComputerButton)));
