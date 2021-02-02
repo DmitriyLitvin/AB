@@ -3,8 +3,7 @@
 <suite name="Exist">
 <test thread-count="1" name="Test">
     <classes>
-        <class name="test.DatabaseTest">
-        </class>
+        <class name="test.DatabaseTest"/>
     </classes>
 </test> <!-- Test -->
 </suite> <!-- Suite -->
