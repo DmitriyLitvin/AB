@@ -10,10 +10,10 @@ public class DatabaseTest extends BaseTest {
     @Test
     public void testComputerExist() throws Exception {
         ComputerPage computerPage = new ComputerPage(webDriver);
-        String discountedDate = computerPage.createComputer("Acorn Archimedes", "Acorn computer", "-");
+        String discountedDate = computerPage.createComputer("a", "Acorn computer", "-");
 
         TablePage tablePage = new TablePage(webDriver);
-        Assert.assertTrue(tablePage.ifComputerExist("Acorn Archimedes", "Acorn computer", "-", discountedDate));
+        Assert.assertFalse(tablePage.ifComputerExist("a", "Acorn computer", "-", discountedDate));
     }
 
     @Test

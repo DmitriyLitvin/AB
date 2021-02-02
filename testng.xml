@@ -4,9 +4,6 @@
 <test thread-count="1" name="Test">
     <classes>
         <class name="test.DatabaseTest">
-            <methods>
-                <include name="testComputerExist" />
-            </methods>
         </class>
     </classes>
 </test> <!-- Test -->
