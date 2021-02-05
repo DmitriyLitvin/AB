@@ -65,9 +65,6 @@ public class TablePage extends BasePage {
 
                 computerTable.add(rowList);
             }
-            if (computerTable.isEmpty()) {
-                break;
-            }
 
             WebElement next = webDriver.findElement(By.xpath(nextA));
             next.click();
